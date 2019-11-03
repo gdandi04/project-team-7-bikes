@@ -12,11 +12,7 @@ This website is served automatically from the default `gh-pages` branch at https
 
 1. Clone this repository to your local machine. E.g., in your terminal / command prompt `CD` to where you want this the folder for this activity to be. Then run `git clone <YOUR_REPO_URL>`.
 
-
-
-https://github.com/Northeastern-DS-4200-F19/project-team-7-bikes
-
-
+1. In `README.md` update the URL above to point to your GitHub pages website. E.g., http://northeastern-ds-4200-f19.github.io/project-team-#-topic where `#` and `topic` are customized.
 
 1. `CD` or open a terminal / command prompt window into the cloned folder.
 
@@ -57,4 +53,13 @@ As you work with your team, you may have issues merging your changes. We recomme
 Instead of all working directly out of the main `gh-pages` branch, you can try adopting a Git branching model for development. See, e.g., [this article by Vincent Driessen](https://nvie.com/posts/a-successful-git-branching-model/) and the included image:
 
 ![Image of Git branching model by VIncent Driessen](http://www.ccs.neu.edu/home/cody/courses/shared/git-model.png)
+
+
+
+------------------------------------------------------------------------------------------------------------------------------------------------------- FINAL README:
+Project Team 7: Bikes, DS 4200 F19
+Shraeya Srinivasan, Ashley Teow, Gauri Dandi
+
+https://github.com/Northeastern-DS-4200-F19/project-team-7-bikes
+
 
