@@ -12,7 +12,10 @@ This website is served automatically from the default `gh-pages` branch at https
 
 1. Clone this repository to your local machine. E.g., in your terminal / command prompt `CD` to where you want this the folder for this activity to be. Then run `git clone <YOUR_REPO_URL>`.
 
-1. In `README.md` update the URL above to point to your GitHub pages website. E.g., http://northeastern-ds-4200-f19.github.io/project-team-#-topic where `#` and `topic` are customized.
+
+
+https://github.com/Northeastern-DS-4200-F19/project-team-7-bikes
+
 
 
 1. `CD` or open a terminal / command prompt window into the cloned folder.
