@@ -26,10 +26,7 @@ var data = d3.csv('data/tremont_northampton_start.csv', function(d) {
   console.log(data);
 }).then(basic_bar_chart(data));
 
-
 function basic_bar_chart(mydata) {
-	//console.log(data);
-
 	//var size = d3.mean(d3.selectAll(data).size());
 
 	var width = 800;
@@ -41,42 +38,40 @@ function basic_bar_chart(mydata) {
 		right: 30
 	}
 
-	var svg = d3.select('body')
+	var svg = d3.select('div.vis-holder')
 				.append('svg')
 				.attr('width', width)
-				.attr('height', height);
-
-	var chart_group = svg.append('g')
-						 .attr('transform','translate(' + margin.left +',' + margin.top + ')');
-
+				.attr('height', height)
+				.attr('margin', margin)
+				.style('background', '#f0efe1');
+	
 	var xScale = d3.scaleBand()
 	  			   .domain(d3.map(mydata, function(d) { return d.starttime; }))
-	  			   .range([margin.left, width-margin.right])
-	  			   .padding(0.5);
+	  			   .range([margin.left, width-margin.right]);
 
 	var yScale = d3.scaleLinear()
-	  			   .domain([0, function(d) { return d.tripduration; }])
+	  			   .domain([0, d3.max(mydata.tripduration)])
 	  			   .range([height-margin.bottom, margin.top]);
 
-	var xAxis = d3.axisBottom(xScale);
-	chart_group.append("g")
-			   .attr("transform", `translate(0, ${height-margin.bottom})`)
-               .call(d3.axisBottom().scale(xScale));
+	var xAxis = svg.append("g")
+			   	   .attr("transform", `translate(0, ${height-margin.bottom})`)
+               	   .call(d3.axisBottom().scale(xScale));
 
-	var yAxis = d3.axisLeft(yScale);
-	chart_group.append("g")
-			   .attr("transform", `translate(${margin.left}, 0)`)
-               .call(d3.axisLeft().scale(yScale));
-
-	var bar = chart_group.selectAll("rect")
-             			 .data(mydata)
-             			 .enter()
-             			 .append("rect")
-             			 .attr("x", function(d) { return xScale(d.starttime); })
-             			 .attr("y", yScale(size))
-             			 .attr("width", xScale.bandwidth())
-             			 .attr("height", function(d) { 
-             			 	return height-margin.bottom-yScale(d.tripduration);
-             			 })
-             			 .style("fill", "purple");
+	var yAxis = svg.append("g")
+			   	   .attr("transform", `translate(${margin.left}, 0)`)
+               	   .call(d3.axisLeft().scale(yScale));
+    /*
+    var rect = svg.select(".vis-svg")
+    			  .selectAll("rect")
+    			  .data(mydata)
+    			  .enter()
+    			  .append("rect")
+             	  .attr("x", function(d) { return xScale(d.starttime); })
+             	  .attr("y", function(d) { return xScale(d.tripduration); })
+             	  .attr("width", xScale.bandwidth())
+             	  .attr("height", function(d) { 
+					return height-margin.bottom-yScale(d.tripduration);
+             	  })
+             	  .style("fill", "purple");
+    */
 };
