@@ -1,40 +1,19 @@
-// var data = d3.csv("data/tremont_northampton_start.csv").then(function(data) {
-//   console.log(data);
-// });
-
 var parseDate = d3.timeParse('%H:%M:%S');
 
-var data = d3.csv('data/tremont_northampton_start.csv', function(d) {
+d3.csv('data/tremont_northampton_start_hour.csv', function(d) {
   return {
-		tripduration: +d.tripduration,
-		starttime: parseDate(d.starttime).getHours(),
-		stoptime: parseDate(d.stoptime).getHours(),
-		startstationid: +d.startstationid,
-		startstationname: d.startstationname,
-		startstationlatitude: +d.startstationlatitude,
-		startstationlongitude: +d.startstationlongitude,
-		endstationid: +d.endstationid,
-		endstationname: d.endstationname,
-		endstationlatitude: +d.endstationlatitude,
-		endstationlongitude: +d.endstationlongitude,
-		bikeid: +d.bikeid,
-		usertype: d.usertype,
-		birthyear: d.birthyear,
-		gender: +d.gender
+		start_hour: d.start_hour,
+		n: +d.n
   };
-}).then(function(data) {
-  console.log(data);
-}).then(basic_bar_chart(data));
+}).then(basic_bar_chart_start);
 
-function basic_bar_chart(mydata) {
-	//var size = d3.mean(d3.selectAll(data).size());
-
-	var width = 800;
+function basic_bar_chart_start(mydata) {
+	var width = 1200;
 	var height = 800;
 	var margin = {
-		top: 30,
-		bottom: 30,
-		left: 30,
+		top: 80,
+		bottom: 80,
+		left: 100,
 		right: 30
 	}
 
@@ -46,11 +25,13 @@ function basic_bar_chart(mydata) {
 				.style('background', '#f0efe1');
 	
 	var xScale = d3.scaleBand()
-	  			   .domain(d3.map(mydata, function(d) { return d.starttime; }))
-	  			   .range([margin.left, width-margin.right]);
+	  			   .domain(d3.map(mydata, function(d) { return d.start_hour; }).keys())
+	  			   .range([margin.left, width-margin.right])
+	  			   .padding(0.5);
 
 	var yScale = d3.scaleLinear()
-	  			   .domain([0, d3.max(mydata.tripduration)])
+	  			   .domain([d3.min(mydata, d => d.n), 
+	  			   		d3.max(mydata, d => d.n)])
 	  			   .range([height-margin.bottom, margin.top]);
 
 	var xAxis = svg.append("g")
@@ -60,18 +41,32 @@ function basic_bar_chart(mydata) {
 	var yAxis = svg.append("g")
 			   	   .attr("transform", `translate(${margin.left}, 0)`)
                	   .call(d3.axisLeft().scale(yScale));
-    /*
-    var rect = svg.select(".vis-svg")
+
+    var rect = svg.append("g")
     			  .selectAll("rect")
     			  .data(mydata)
     			  .enter()
     			  .append("rect")
-             	  .attr("x", function(d) { return xScale(d.starttime); })
-             	  .attr("y", function(d) { return xScale(d.tripduration); })
+             	  .attr("x", function(d) { return xScale(d.start_hour); })
+             	  .attr("y", function(d) { return yScale(d.n); })
              	  .attr("width", xScale.bandwidth())
              	  .attr("height", function(d) { 
-					return height-margin.bottom-yScale(d.tripduration);
+					return height-margin.bottom-yScale(d.n);
              	  })
              	  .style("fill", "purple");
-    */
+
+    var yLabel = svg.append("text")
+            		.attr("text-anchor", "middle")
+            		.attr("transform", "translate("+ (margin.left/2) +","+(height/2)+")rotate(-90)")
+            		.text("Number of Trips");
+    
+    var xLabel = svg.append("text")
+            		.attr("text-anchor", "middle")
+            		.attr("transform", "translate("+ (width/2) +","+(height-(margin.bottom/3))+")")
+            		.text("Hour of Day");
+
+    var chartTitle = svg.append("text")
+            		.attr("text-anchor", "middle")
+            		.attr("transform", "translate("+ (width/2) +","+(15+(margin.bottom/3))+")")
+            		.text("Tremont St at Northampton St Hourly Usage");
 };
