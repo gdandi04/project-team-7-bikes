@@ -25,15 +25,14 @@ function basic_bar_chart_start(mydata) {
 				.append('svg')
 				.attr('width', width)
 				.attr('height', height)
-				.attr('margin', margin)
-				.style('background', '#f0efe1');
-	
+				.attr('margin', margin);
+
 	// create the x-scale using the keys from a map call
-	// x-scale should contain 0:00-23:00, indicating the hour of day in 24-hour time
+	// x-scale contains 0:00-23:00, indicating the hour of day in 24-hour time
 	var xScale = d3.scaleBand()
 	  			   .domain(d3.map(mydata, function(d) { return d.start_hour; }).keys())
 	  			   .range([margin.left, width-margin.right])
-	  			   .padding(0.5);
+	  			   .padding(0.1);
 
 	// create the y-scale with the domain being the minimum # of rides to the maximum number of rides
 	var yScale = d3.scaleLinear()
@@ -51,6 +50,11 @@ function basic_bar_chart_start(mydata) {
 			   	   .attr("transform", `translate(${margin.left}, 0)`)
                	   .call(d3.axisLeft().scale(yScale));
 
+    var tooltip = d3.select("div.vis-holder")
+    				.append("div")
+    				.style("visibility", "hidden")
+    				.text(mydata.n);
+
     // append the bars onto the svg representing the data
     var rect = svg.append("g")
     			  .selectAll("rect")
@@ -63,7 +67,15 @@ function basic_bar_chart_start(mydata) {
              	  .attr("height", function(d) { 
 					return height-margin.bottom-yScale(d.n);
              	  })
-             	  .style("fill", "purple");
+             	  .style("fill", "#1a2f66")
+             	  .on("mouseover", function(d) {
+             	  	tooltip
+             	  	.html(mydata.n);
+             	  })
+             	  .on("mousemove", function(d) {
+             	  	tooltip.html(mydata.n);
+             	  })
+             	  .on("mouseout", tooltip.style("display", "none"));
     
     // create a x-axis title
     var xLabel = svg.append("text")
