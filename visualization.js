@@ -50,11 +50,6 @@ function basic_bar_chart_start(mydata) {
 			   	   .attr("transform", `translate(${margin.left}, 0)`)
                	   .call(d3.axisLeft().scale(yScale));
 
-    var tooltip = d3.select("div.vis-holder")
-    				.append("div")
-    				.style("visibility", "hidden")
-    				.text(mydata.n);
-
     // append the bars onto the svg representing the data
     var rect = svg.append("g")
     			  .selectAll("rect")
@@ -67,15 +62,22 @@ function basic_bar_chart_start(mydata) {
              	  .attr("height", function(d) { 
 					return height-margin.bottom-yScale(d.n);
              	  })
-             	  .style("fill", "#1a2f66")
-             	  .on("mouseover", function(d) {
-             	  	tooltip
-             	  	.html(mydata.n);
-             	  })
-             	  .on("mousemove", function(d) {
-             	  	tooltip.html(mydata.n);
-             	  })
-             	  .on("mouseout", tooltip.style("display", "none"));
+             	  .on("mouseover", mouseover)
+             	  .on("mousemove", mousemove);
+
+    var tooltip = d3.select("div.vis-holder")
+   				.attr("class", "tooltip")
+    			.style(opacity, 0);
+
+   	var mouseover = function(d) {
+   		tooltip.style("opacity", 1)
+   		d3.select(this)
+   		  .style("opacity", 1);
+   	}
+
+   	var mousemove = function(d) {
+   		tooltip.html("Number of rides at " + d.start_hour + " " + d.n);
+   	}
     
     // create a x-axis title
     var xLabel = svg.append("text")
