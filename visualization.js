@@ -50,6 +50,30 @@ function basic_bar_chart_start(mydata) {
 			   	   .attr("transform", `translate(${margin.left}, 0)`)
                	   .call(d3.axisLeft().scale(yScale));
 
+	var tooltip = d3.select("#vis-svg")
+	    			.append("div")
+	    			.style("opacity", 0)
+	    			.attr("class", "tooltip")
+	    			.style("background-color", "white");
+
+	var mouseover = function(d) {
+		tooltip.style("opacity", 1)
+		d3.select(this)
+		  .style("stroke", "black")
+		  .style("opacity", 1);
+	}
+
+	var mousemove = function(d) {
+		tooltip.html("Number of trips during this hour: " + d.n);
+	}
+
+	var mouseout = function(d) {
+		tooltip.style("opacity", 0)
+	    d3.select(this)
+	      .style("stroke", "none")
+	      .style("opacity", 0.8);
+	}
+
     // append the bars onto the svg representing the data
     var rect = svg.append("g")
     			  .selectAll("rect")
@@ -62,22 +86,9 @@ function basic_bar_chart_start(mydata) {
              	  .attr("height", function(d) { 
 					return height-margin.bottom-yScale(d.n);
              	  })
-             	  .on("mouseover", mouseover)
-             	  .on("mousemove", mousemove);
-
-    var tooltip = d3.select("div.vis-holder")
-   				.attr("class", "tooltip")
-    			.style(opacity, 0);
-
-   	var mouseover = function(d) {
-   		tooltip.style("opacity", 1)
-   		d3.select(this)
-   		  .style("opacity", 1);
-   	}
-
-   	var mousemove = function(d) {
-   		tooltip.html("Number of rides at " + d.start_hour + " " + d.n);
-   	}
+             	  .on("mouseover", function(){return tooltip.style("visibility", "visible");})
+				  .on("mousemove", function(){return tooltip.style("top", "30px").style("left", "30px");})
+				  .on("mouseout", function(){return tooltip.style("visibility", "hidden");});
     
     // create a x-axis title
     var xLabel = svg.append("text")
