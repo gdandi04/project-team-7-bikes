@@ -19,16 +19,32 @@ all_boston$end_hour = paste(substr(all_boston$stoptime, 12, 13), ":00", sep = ""
 
 install.packages("dplyr")
 library(dplyr)
-count_start_hours = function(x) {
+count_start_sub = function(x) {
   x %>%
     group_by(start_hour) %>%
-    tally();
+    filter(usertype == "Subscriber") %>%
+    summarize(subscriber = n());
 }
 
-count_end_hours = function(x) {
+count_start_cust = function(x) {
+  x %>%
+    group_by(start_hour) %>%
+    filter(usertype == "Customer") %>%
+    summarize(customer = n());
+}
+
+count_end_sub = function(x) {
   x %>%
     group_by(end_hour) %>%
-    tally();
+    filter(usertype == "Subscriber") %>%
+    summarize(subscriber = n());
+}
+
+count_end_cust = function(x) {
+  x %>%
+    group_by(end_hour) %>%
+    filter(usertype == "Customer") %>%
+    summarize(customer = n());
 }
 
 # Create subsets of the entire data file for the 4 stations of interest to Chester Square
@@ -36,8 +52,13 @@ count_end_hours = function(x) {
 tremont_northampton_start = subset(all_boston, start.station.id == 364)
 tremont_northampton_end = subset(all_boston, end.station.id == 364)
 
-tremont_northampton_start_hour = count_start_hours(tremont_northampton_start)
-tremont_northampton_end_hour = count_end_hours(tremont_northampton_end)
+tremont_northampton_start_hour = merge(count_start_sub(tremont_northampton_start), 
+                                       count_start_cust(tremont_northampton_start), by = "start_hour")
+tremont_northampton_start_hour$total = tremont_northampton_start_hour$subscriber + tremont_northampton_start_hour$customer
+
+tremont_northampton_end_hour = merge(count_end_sub(tremont_northampton_end), 
+                                       count_end_cust(tremont_northampton_end), by = "end_hour")
+tremont_northampton_end_hour$total = tremont_northampton_end_hour$subscriber + tremont_northampton_end_hour$customer
 
 ## Columbus Ave at Massachusetts Ave
 columbus_mass_start = subset(all_boston, start.station.id == 57)
@@ -80,7 +101,7 @@ write.csv(wash_rutland_end,
           "/Users/gauri_dandi/Documents/Northeastern/2019-2020/DS4200/Project/project-team-7-bikes/data/wash_rutland_end.csv")
 
 write.csv(tremont_northampton_start_hour, 
-          "/Users/gauri_dandi/Documents/Northeastern/2019-2020/DS4200/Project/project-team-7-bikes/data/tremont_northampton_start_hour.csv")
+          "/Users/gauri_dandi/Documents/Northeastern/2019-2020/DS4200/project-team-7-bikes/data/tremont_northampton_start_hour.csv")
 write.csv(tremont_northampton_end_hour, 
           "/Users/gauri_dandi/Documents/Northeastern/2019-2020/DS4200/Project/project-team-7-bikes/data/tremont_northampton_end_hour.csv")
 write.csv(columbus_mass_start_hour, 
