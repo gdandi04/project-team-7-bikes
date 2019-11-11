@@ -9,6 +9,10 @@ h1, h2, h3 {
 	line-height: 1.2
 }
 
+.bar {
+	fill: grey;
+}
+
 /* Your text should be in a nice narrow column */
 .content-column {
 	max-width: 650px;
@@ -19,6 +23,12 @@ h1, h2, h3 {
 .vis-holder {
   width: 1200;
   height: 800;
+}
+
+.dataLine {
+	stroke: red;
+	stroke-width: 2px;
+	fill: none;
 }
 
 /* Fork on GitHub ribbon via https://codepo8.github.io/css-fork-on-github-ribbon/# */  

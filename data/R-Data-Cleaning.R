@@ -64,55 +64,67 @@ tremont_northampton_end_hour$total = tremont_northampton_end_hour$subscriber + t
 columbus_mass_start = subset(all_boston, start.station.id == 57)
 columbus_mass_end = subset(all_boston, end.station.id == 57)
 
-columbus_mass_start_hour = count_start_hours(columbus_mass_start)
-columbus_mass_end_hour = count_end_hours(columbus_mass_end)
+columbus_mass_start_hour = merge(count_start_sub(columbus_mass_start), 
+                                       count_start_cust(columbus_mass_start), by = "start_hour")
+columbus_mass_start_hour$total = columbus_mass_start_hour$subscriber + columbus_mass_start_hour$customer
+
+columbus_mass_end_hour = merge(count_end_sub(columbus_mass_end), 
+                                     count_end_cust(columbus_mass_end), by = "end_hour")
+columbus_mass_end_hour$total = columbus_mass_end_hour$subscriber + columbus_mass_end_hour$customer
+
 
 ## South End Library - Tremont St at W Newton St
 south_end_lib_start = subset(all_boston, start.station.id == 25)
 south_end_lib_end = subset(all_boston, end.station.id == 25)
 
-south_end_lib_start_hour = count_start_hours(south_end_lib_start)
-south_end_lib_end_hour = count_end_hours(south_end_lib_end)
+south_end_lib_start_hour = merge(count_start_sub(south_end_lib_start), 
+                                 count_start_cust(south_end_lib_start), by = "start_hour")
+south_end_lib_start_hour$total = south_end_lib_start_hour$subscriber + south_end_lib_start_hour$customer
+
+south_end_lib_end_hour = merge(count_end_sub(south_end_lib_end), 
+                               count_end_cust(south_end_lib_end), by = "end_hour")
+south_end_lib_end_hour$total = south_end_lib_end_hour$subscriber + south_end_lib_end_hour$customer
 
 ## Washington St at Rutland St
 wash_rutland_start = subset(all_boston, start.station.id == 39)
 wash_rutland_end = subset(all_boston, end.station.id == 39)
 
-wash_rutland_start_hour = count_start_hours(wash_rutland_start)
-wash_rutland_end_hour = count_end_hours(wash_rutland_end)
+wash_rutland_start_hour = merge(count_start_sub(wash_rutland_start), 
+                                 count_start_cust(wash_rutland_start), by = "start_hour")
+wash_rutland_start_hour$total = wash_rutland_start_hour$subscriber + wash_rutland_start_hour$customer
 
-write.csv(all_boston, 
-          "/Users/gauri_dandi/Documents/Northeastern/2019-2020/DS4200/Project/project-team-7-bikes/data/all_boston.csv")
-write.csv(tremont_northampton_start, 
-          "/Users/gauri_dandi/Documents/Northeastern/2019-2020/DS4200/Project/project-team-7-bikes/data/tremont_northampton_start.csv")
-write.csv(tremont_northampton_end, 
-          "/Users/gauri_dandi/Documents/Northeastern/2019-2020/DS4200/Project/project-team-7-bikes/data/tremont_northampton_end.csv")
-write.csv(columbus_mass_start, 
-          "/Users/gauri_dandi/Documents/Northeastern/2019-2020/DS4200/Project/project-team-7-bikes/data/columbus_mass_start.csv")
-write.csv(columbus_mass_end, 
-          "/Users/gauri_dandi/Documents/Northeastern/2019-2020/DS4200/Project/project-team-7-bikes/data/columbus_mass_end.csv")
-write.csv(south_end_lib_start, 
-          "/Users/gauri_dandi/Documents/Northeastern/2019-2020/DS4200/Project/project-team-7-bikes/data/south_end_lib_start.csv")
-write.csv(south_end_lib_end, 
-          "/Users/gauri_dandi/Documents/Northeastern/2019-2020/DS4200/Project/project-team-7-bikes/data/south_end_lib_end.csv")
-write.csv(wash_rutland_start, 
-          "/Users/gauri_dandi/Documents/Northeastern/2019-2020/DS4200/Project/project-team-7-bikes/data/wash_rutland_start.csv")
-write.csv(wash_rutland_end, 
-          "/Users/gauri_dandi/Documents/Northeastern/2019-2020/DS4200/Project/project-team-7-bikes/data/wash_rutland_end.csv")
+wash_rutland_end_hour = merge(count_end_sub(wash_rutland_end), 
+                               count_end_cust(wash_rutland_end), by = "end_hour")
+wash_rutland_end_hour$total = wash_rutland_end_hour$subscriber + wash_rutland_end_hour$customer
 
+## All of Boston
+all_boston_start_hour = merge(count_start_sub(all_boston), 
+                                count_start_cust(all_boston), by = "start_hour")
+all_boston_start_hour$total = all_boston_start_hour$subscriber + all_boston_start_hour$customer
+
+all_boston_end_hour = merge(count_end_sub(all_boston), 
+                              count_end_cust(all_boston), by = "end_hour")
+all_boston_end_hour$total = all_boston_end_hour$subscriber + all_boston_end_hour$customer
+
+#---------
+
+write.csv(all_boston_start_hour, 
+          "/Users/gauri_dandi/Documents/Northeastern/2019-2020/DS4200/project-team-7-bikes/data/all_boston_start_hour.csv")
+write.csv(all_boston_end_hour, 
+          "/Users/gauri_dandi/Documents/Northeastern/2019-2020/DS4200/project-team-7-bikes/data/all_boston_end_hour.csv")
 write.csv(tremont_northampton_start_hour, 
           "/Users/gauri_dandi/Documents/Northeastern/2019-2020/DS4200/project-team-7-bikes/data/tremont_northampton_start_hour.csv")
 write.csv(tremont_northampton_end_hour, 
-          "/Users/gauri_dandi/Documents/Northeastern/2019-2020/DS4200/Project/project-team-7-bikes/data/tremont_northampton_end_hour.csv")
+          "/Users/gauri_dandi/Documents/Northeastern/2019-2020/DS4200/project-team-7-bikes/data/tremont_northampton_end_hour.csv")
 write.csv(columbus_mass_start_hour, 
-          "/Users/gauri_dandi/Documents/Northeastern/2019-2020/DS4200/Project/project-team-7-bikes/data/columbus_mass_start_hour.csv")
+          "/Users/gauri_dandi/Documents/Northeastern/2019-2020/DS4200/project-team-7-bikes/data/columbus_mass_start_hour.csv")
 write.csv(columbus_mass_end_hour, 
-          "/Users/gauri_dandi/Documents/Northeastern/2019-2020/DS4200/Project/project-team-7-bikes/data/columbus_mass_end_hour.csv")
+          "/Users/gauri_dandi/Documents/Northeastern/2019-2020/DS4200/project-team-7-bikes/data/columbus_mass_end_hour.csv")
 write.csv(south_end_lib_start_hour, 
-          "/Users/gauri_dandi/Documents/Northeastern/2019-2020/DS4200/Project/project-team-7-bikes/data/south_end_lib_start_hour.csv")
+          "/Users/gauri_dandi/Documents/Northeastern/2019-2020/DS4200/project-team-7-bikes/data/south_end_lib_start_hour.csv")
 write.csv(south_end_lib_end_hour, 
-          "/Users/gauri_dandi/Documents/Northeastern/2019-2020/DS4200/Project/project-team-7-bikes/data/south_end_lib_end_hour.csv")
+          "/Users/gauri_dandi/Documents/Northeastern/2019-2020/DS4200/project-team-7-bikes/data/south_end_lib_end_hour.csv")
 write.csv(wash_rutland_start_hour, 
-          "/Users/gauri_dandi/Documents/Northeastern/2019-2020/DS4200/Project/project-team-7-bikes/data/wash_rutland_start_hour.csv")
+          "/Users/gauri_dandi/Documents/Northeastern/2019-2020/DS4200/project-team-7-bikes/data/wash_rutland_start_hour.csv")
 write.csv(wash_rutland_end_hour, 
-          "/Users/gauri_dandi/Documents/Northeastern/2019-2020/DS4200/Project/project-team-7-bikes/data/wash_rutland_end_hour.csv")
+          "/Users/gauri_dandi/Documents/Northeastern/2019-2020/DS4200/project-team-7-bikes/data/wash_rutland_end_hour.csv")
