@@ -1,3 +1,4 @@
+/* -----Start Stops---- */
 // read in the data
 d3.csv('data/tremont_northampton_start_hour.csv', function(d) {
   return {
@@ -58,7 +59,7 @@ function basic_bar_chart_start(mydata) {
 		bottom: 80,
 		left: 100,
 		right: 30
-	}
+	};
 
 	// initialize the svg witht the width, height, and margins
 	var svg = d3.select(".vis-holder")
@@ -79,9 +80,6 @@ function basic_bar_chart_start(mydata) {
 	var yScale = d3.scaleLinear()
 				   .domain([0, 25])
 				   .range([height-margin.bottom, margin.top]);
-	  			   // .domain([d3.min(mydata, d => d.n), 
-	  			   // 		d3.max(mydata, d => d.n)])
-	  			   // .range([height-margin.bottom, margin.top]);
 
 	// add the x-axis onto the svg, scaled to xScale
 	var xAxis = svg.append("g")
@@ -92,13 +90,6 @@ function basic_bar_chart_start(mydata) {
 	var yAxis = svg.append("g")
 			   	   .attr("transform", `translate(${margin.left}, 0)`)
                	   .call(d3.axisLeft().scale(yScale));
-
-	var tooltip = d3.select(".svg-vis-start")
-	    			.append("div")
-	    			.attr("class", "tooltip");
-
-	tooltip.append("div")
-		   .attr("class", "count");
 
     // append the bars onto the svg representing the data
     var rect = svg.append("g")
@@ -113,21 +104,6 @@ function basic_bar_chart_start(mydata) {
              	  .attr("height", function(d) { 
 					return height-margin.bottom-yScale(d.pct);
              	  });
-             	 //  .on("mouseover",mouseover)
-            	  // .on("mouseout",mouseout);
-
-    // rect.on('mouseenter', function (actual, i) {
-    //     d3.select(this).attr("opacity", 0.5)
-    //     			   .html(d3.format(".1%")(d.n))   
-    //      .style("left", (d3.event.pageX) + "px")        
-    //      .style("top",  (d3.event.pageY - 32) + "px")
-    //      .transition()      
-    //      .duration(200)     
-    //      .style("opacity", .9)
-    // 	})
-    // 	.on('mouseleave', function (actual, i) {
-    //     	d3.select(this).attr("opacity", 1)
-    // 	});
 
 	var line = d3.line()
 	  			 .x(function(d) { return xScale(d.start_hour); })
@@ -156,7 +132,7 @@ function basic_bar_chart_start(mydata) {
             		.text("Hourly Percentage of Trips Starting at Tremont St at Northampton St");
 };
 
-/* --------- */
+/* -----End Stops---- */
 // read in the data
 d3.csv('data/tremont_northampton_end_hour.csv', function(d) {
   return {
@@ -217,7 +193,7 @@ function basic_bar_chart_end(mydata) {
 		bottom: 80,
 		left: 100,
 		right: 30
-	}
+	};
 
 	// initialize the svg witht the width, height, and margins
 	var svg = d3.select(".vis-holder")
@@ -238,9 +214,6 @@ function basic_bar_chart_end(mydata) {
 	var yScale = d3.scaleLinear()
 				   .domain([0, 25])
 				   .range([height-margin.bottom, margin.top]);
-	  			   // .domain([d3.min(mydata, d => d.n), 
-	  			   // 		d3.max(mydata, d => d.n)])
-	  			   // .range([height-margin.bottom, margin.top]);
 
 	// add the x-axis onto the svg, scaled to xScale
 	var xAxis = svg.append("g")
@@ -272,21 +245,6 @@ function basic_bar_chart_end(mydata) {
              	  .attr("height", function(d) { 
 					return height-margin.bottom-yScale(d.pct);
              	  });
-             	 //  .on("mouseover",mouseover)
-            	  // .on("mouseout",mouseout);
-
-    // rect.on('mouseenter', function (actual, i) {
-    //     d3.select(this).attr("opacity", 0.5)
-    //     			   .html(d3.format(".1%")(d.n))   
-    //      .style("left", (d3.event.pageX) + "px")        
-    //      .style("top",  (d3.event.pageY - 32) + "px")
-    //      .transition()      
-    //      .duration(200)     
-    //      .style("opacity", .9)
-    // 	})
-    // 	.on('mouseleave', function (actual, i) {
-    //     	d3.select(this).attr("opacity", 1)
-    // 	});
 
 	var line = d3.line()
 	  			 .x(function(d) { return xScale(d.end_hour); })
@@ -295,7 +253,6 @@ function basic_bar_chart_end(mydata) {
 	svg.append('path')
   			  .attr('d', line(mydata))
   			  .attr('class', 'dataLine');
-
     
     // create a x-axis title
     var xLabel = svg.append("text")
